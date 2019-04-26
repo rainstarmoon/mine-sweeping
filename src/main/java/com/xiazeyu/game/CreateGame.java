@@ -1,5 +1,6 @@
 package com.xiazeyu.game;
 
+import com.xiazeyu.Exception.ConfigException;
 import com.xiazeyu.common.Config;
 
 import java.util.Random;
@@ -7,8 +8,8 @@ import java.util.Random;
 public class CreateGame {
 
     public static void create(int length, int width, int landmineNum) {
-        CreateGame.initChessBoard(length, width);
-        CreateGame.initLandmine(landmineNum);
+        initChessBoard(length, width);
+        initLandmine(landmineNum);
     }
 
     /**
@@ -16,13 +17,18 @@ public class CreateGame {
      */
     public static void initChessBoard(int length, int width) {
         if (length == 0 || width == 0) {
-            throw new RuntimeException("棋盘长宽有误");
+            throw new ConfigException("棋盘长宽有误");
         }
+        // 初始化长宽
         Config.chessBoardLength = length;
         Config.chessBoardWidth = width;
+        // 初始化地雷棋盘
         Config.chessBoard = new int[length][width];
+        // 初始化展示棋盘
         Config.chessBoardShow = new String[length][width];
+        // 初始化点击棋盘
         Config.chessBoardClick = new int[length][width];
+        // 初始化展示棋盘数据
         for (int i = 0; i < Config.chessBoardLength; i++) {
             for (int j = 0; j < Config.chessBoardWidth; j++) {
                 Config.chessBoardShow[i][j] = Config.area_sign;
@@ -35,7 +41,7 @@ public class CreateGame {
      */
     public static void initLandmine(int landmineNum) {
         if (landmineNum == 0) {
-            throw new RuntimeException("地雷数量有误");
+            throw new ConfigException("地雷数量有误");
         }
         Config.landmineNum = landmineNum;
     }
@@ -48,7 +54,7 @@ public class CreateGame {
         int canUsedGrid = Config.chessBoardLength * Config.chessBoardWidth - 1;
         int landmineNum = Config.landmineNum;
         if (canUsedGrid <= 0 || canUsedGrid <= Config.landmineNum) {
-            throw new RuntimeException("可用网格不足");
+            throw new ConfigException("可用网格不足");
         }
         for (int i = 0; i < Config.chessBoardLength; i++) {
             for (int j = 0; j < Config.chessBoardWidth; j++) {
@@ -68,6 +74,5 @@ public class CreateGame {
             }
         }
     }
-
 
 }

@@ -1,4 +1,4 @@
-package com.xiazeyu.core;
+package com.xiazeyu.core.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

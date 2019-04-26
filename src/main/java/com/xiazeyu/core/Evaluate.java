@@ -1,7 +1,9 @@
 package com.xiazeyu.core;
 
+import com.xiazeyu.Exception.EvaluateException;
 import com.xiazeyu.common.Config;
 import com.xiazeyu.common.Info;
+import com.xiazeyu.core.data.Decision;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -11,9 +13,9 @@ import java.lang.reflect.Method;
  */
 public class Evaluate {
 
-    public void execute() {
+    public static Integer execute() throws EvaluateException {
         if (Info.decisionSequence.isEmpty()) {
-            throw new RuntimeException("未生成指令");
+            return null;
         }
         for (Decision decision : Info.decisionSequence) {
             String cmd = decision.getCmd();
@@ -31,18 +33,17 @@ public class Evaluate {
                     Method method = classObj.getMethod(methodName, paramsClass);
                     method.invoke(null, params);
                 } catch (ClassNotFoundException e) {
-                    throw new RuntimeException("生成的指令有误");
+                    throw new EvaluateException("生成的指令有误", e);
                 } catch (NoSuchMethodException e) {
-                    throw new RuntimeException("生成的指令有误");
+                    throw new EvaluateException("生成的指令有误", e);
                 } catch (IllegalAccessException e) {
-                    throw new RuntimeException("传递的参数有误");
+                    throw new EvaluateException("传递的参数有误", e);
                 } catch (InvocationTargetException e) {
-                    throw new RuntimeException("传递的参数有误");
+                    throw new EvaluateException("传递的参数有误", e);
                 }
             }
         }
-
-
+        return Info.decisionSequence.size();
     }
 
 }

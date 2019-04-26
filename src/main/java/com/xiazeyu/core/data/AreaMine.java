@@ -1,17 +1,16 @@
-package com.xiazeyu.core;
+package com.xiazeyu.core.data;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 空白区域
+ * 地雷区域
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Area {
-
+public class AreaMine {
     /**
      * 横坐标
      */
@@ -21,5 +20,4 @@ public class Area {
      * 纵坐标
      */
     private int y;
-
 }

@@ -1,5 +1,7 @@
 package com.xiazeyu.game;
 
+import com.xiazeyu.Exception.EvaluateException;
+import com.xiazeyu.Exception.GameException;
 import com.xiazeyu.common.Config;
 import com.xiazeyu.common.Tools;
 
@@ -11,6 +13,20 @@ public class PlayGame {
         PlayGame.show();
         Scanner scan = new Scanner(System.in);
         while (true) {
+
+            if (Config.clickNum != 0) {
+
+
+                try {
+
+                    show();
+                    break;
+                } catch (EvaluateException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
             String inLine = scan.nextLine();
             String[] split = inLine.split(",|[.]");
             if (split.length != 2) {
@@ -20,24 +36,24 @@ public class PlayGame {
             Integer x = Integer.valueOf(split[0]);
             Integer y = Integer.valueOf(split[1]);
             try {
-                PlayGame.click(x, y);
+                clickLeft(x, y);
                 if (win()) {
                     System.out.println("恭喜您获得了胜利！！！");
                     break;
                 }
-            } catch (RuntimeException e) {
-                Config.chessBoardShow[x][y] = "*";
+            } catch (GameException e) {
+                Config.chessBoardShow[x][y] = "×";
                 throw e;
             } finally {
-                PlayGame.show();
+                show();
             }
         }
     }
 
     /**
-     * 点击棋盘
+     * 左键点击棋盘
      */
-    public static void click(Integer x, Integer y) {
+    public static void clickLeft(Integer x, Integer y) {
         if (Config.clickNum == 0) {
             // 初始化棋盘
             CreateGame.ready(x, y);
@@ -57,7 +73,7 @@ public class PlayGame {
         }
         // 点中地雷
         if (Config.chessBoard[x][y] == 1) {
-            throw new RuntimeException("Config over");
+            throw new GameException("Game over");
         }
         // 计算所点位置显示值
         int calc = calc(x, y);
@@ -66,14 +82,34 @@ public class PlayGame {
             Config.chessBoardShow[x][y] = Config.unEffect_sign;
             // 周围8格递归点击
             for (int i = 0; i < Config.checkSuite.length; i++) {
-                click(x + Config.checkSuite[i][0], y + Config.checkSuite[i][1]);
+                clickLeft(x + Config.checkSuite[i][0], y + Config.checkSuite[i][1]);
             }
         } else {
             // 点击位置周围8格有雷
-            Config.chessBoardShow[x][y] = translateNum(calc);
+            Config.chessBoardShow[x][y] = String.valueOf(calc);
         }
     }
 
+    /**
+     * 右键点击棋盘
+     *
+     * @param x
+     * @param y
+     */
+    public static void clickRight(Integer x, Integer y) {
+        if (Tools.checkCoordinateUtil(x, y)) {
+            // 点击越界
+            return;
+        }
+        if (Config.chessBoardClick[x][y] == 1) {
+            // 点过了
+            return;
+        } else {
+            // 记录点击
+            Config.chessBoardClick[x][y] = 1;
+        }
+        Config.chessBoardShow[x][y] = Config.effect_sign;
+    }
 
     /**
      * 检查是否有雷
@@ -112,7 +148,7 @@ public class PlayGame {
         for (int j = 0; j < Config.chessBoardWidth; j++) {
             System.out.print("┃");
             for (int i = 0; i < Config.chessBoardLength; i++) {
-                System.out.print(Config.chessBoardShow[i][j]);
+                System.out.print(Tools.translateNumForShow(Config.chessBoardShow[i][j]));
             }
             System.out.println("┃");
         }
@@ -132,48 +168,23 @@ public class PlayGame {
 
     public static boolean win() {
         int noClick = 0;
+        int mineNum = 0;
         for (int j = 0; j < Config.chessBoardWidth; j++) {
             for (int i = 0; i < Config.chessBoardLength; i++) {
-                if (Config.area_sign.equals(Config.chessBoardShow[i][j])) {
+                String tmp = Config.chessBoardShow[i][j];
+                if (Config.area_sign.equals(tmp)) {
                     noClick++;
+                }
+                if (Config.effect_sign.equals(tmp)) {
+                    mineNum++;
                 }
             }
         }
-        if (noClick == Config.landmineNum) {
+        if (noClick + mineNum == Config.landmineNum) {
             return true;
         }
         return false;
     }
 
-    public static String translateNum(int num) {
-        String tmp = null;
-        switch (num) {
-            case 1:
-                tmp = "①";
-                break;
-            case 2:
-                tmp = "②";
-                break;
-            case 3:
-                tmp = "③";
-                break;
-            case 4:
-                tmp = "④";
-                break;
-            case 5:
-                tmp = "⑤";
-                break;
-            case 6:
-                tmp = "⑥";
-                break;
-            case 7:
-                tmp = "⑦";
-                break;
-            case 8:
-                tmp = "⑧";
-                break;
-        }
-        return tmp;
-    }
 
 }

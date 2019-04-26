@@ -2,6 +2,10 @@ package com.xiazeyu.core;
 
 import com.xiazeyu.common.Config;
 import com.xiazeyu.common.Info;
+import com.xiazeyu.core.data.Aggregation;
+import com.xiazeyu.core.data.AreaBlank;
+import com.xiazeyu.core.data.Decision;
+import com.xiazeyu.core.data.Node;
 
 import java.util.Collection;
 
@@ -10,13 +14,24 @@ import java.util.Collection;
  */
 public class Analyze {
 
-    public static void simpleInfoDeal() {
+    public static void simpleNodeDeal(String direction) {
+        Info.cleanDecisionSequence();
         Collection<Aggregation> values = Info.aggregationMap.values();
         for (Aggregation value : values) {
-            if (value.getNode().simpleNode()) {
-                for (Area area : value.getAroundAreas()) {
-                    Info.decisionSequence.add(
-                            new Decision(Config.decision_type_simple, "com.xiazeyu.game.PlayGame" + Config.cmd_separation_sign + "click", new Object[]{area.getX(), area.getY()}));
+            Node node = value.getNode();
+            if ("left".equals(direction)) {
+                if (node.leftClickNode()) {
+                    for (AreaBlank areaBlank : node.getAroundAreaBlanks()) {
+                        Info.decisionSequence.add(
+                                new Decision(Config.decision_type_simple, "com.xiazeyu.game.PlayGame" + Config.cmd_separation_sign + "clickLeft", new Object[]{areaBlank.getX(), areaBlank.getY()}));
+                    }
+                }
+            } else if ("right".equals(direction)) {
+                if (node.rightClickNode()) {
+                    for (AreaBlank areaBlank : node.getAroundAreaBlanks()) {
+                        Info.decisionSequence.add(
+                                new Decision(Config.decision_type_simple, "com.xiazeyu.game.PlayGame" + Config.cmd_separation_sign + "clickRight", new Object[]{areaBlank.getX(), areaBlank.getY()}));
+                    }
                 }
             }
         }

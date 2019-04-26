@@ -1,9 +1,7 @@
-package com.xiazeyu.core;
+package com.xiazeyu.core.data;
 
 import com.xiazeyu.common.Config;
 import lombok.Data;
-
-import java.util.Set;
 
 /**
  * 聚合根
@@ -31,10 +29,7 @@ public class Aggregation {
      * 对应node
      */
     private Node node;
-    /**
-     * 对应的空白区域
-     */
-    private Set<Area> aroundAreas;
+
 
     public static String generateKey(int x, int y) {
         return x + Config.aggregation_key_sign + y;

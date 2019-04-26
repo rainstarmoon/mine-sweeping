@@ -6,6 +6,8 @@ public class Config {
 
     public static final String unEffect_sign = "□";
 
+    public static final String effect_sign = "*";
+
     public static final String aggregation_key_sign = ",";
 
     public static final String cmd_separation_sign = "#";
@@ -29,6 +31,5 @@ public class Config {
     public static int clickNum;
 
     public static int[][] checkSuite = {{-1, -1}, {0, -1}, {1, -1}, {-1, 0}, {1, 0}, {-1, 1}, {0, 1}, {1, 1}};
-
 
 }
