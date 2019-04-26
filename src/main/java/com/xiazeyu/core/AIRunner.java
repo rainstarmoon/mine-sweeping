@@ -1,6 +1,6 @@
 package com.xiazeyu.core;
 
-import com.xiazeyu.Exception.GameException;
+import com.xiazeyu.exception.GameException;
 import com.xiazeyu.common.Config;
 import com.xiazeyu.game.PlayGame;
 

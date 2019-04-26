@@ -1,4 +1,4 @@
-package com.xiazeyu.Exception;
+package com.xiazeyu.exception;
 
 public class GameException extends RuntimeException {
     public GameException() {

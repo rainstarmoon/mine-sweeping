@@ -1,4 +1,4 @@
-package com.xiazeyu.Exception;
+package com.xiazeyu.exception;
 
 public class EvaluateException extends RuntimeException {
     public EvaluateException() {

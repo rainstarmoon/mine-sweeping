@@ -1,7 +1,7 @@
 package com.xiazeyu.game;
 
-import com.xiazeyu.Exception.EvaluateException;
-import com.xiazeyu.Exception.GameException;
+import com.xiazeyu.exception.EvaluateException;
+import com.xiazeyu.exception.GameException;
 import com.xiazeyu.common.Config;
 import com.xiazeyu.common.Tools;
 

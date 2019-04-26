@@ -1,6 +1,6 @@
 package com.xiazeyu.game;
 
-import com.xiazeyu.Exception.ConfigException;
+import com.xiazeyu.exception.ConfigException;
 import com.xiazeyu.common.Config;
 
 import java.util.Random;
